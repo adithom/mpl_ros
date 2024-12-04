@@ -2,42 +2,55 @@
   <arg name="debug" default="false"/>
   <arg name="dt" default="0.2"/>
   <arg name="max_num" default="-1"/>
-  <!--<arg name="debug_valgrind" default="false"/>-->
+  <arg name="bag_file" default="$(find mpl_test_node)/maps/office/office.bag"/>
+
+  <!-- Add arguments for start and goal -->
+  <arg name="start_x" default="8.0"/>
+  <arg name="start_y" default="13.0"/>
+  <arg name="start_z" default="1.3"/>
+  <arg name="start_vx" value="0.0"/>
+  <arg name="start_vy" value="0.0"/>
+  <arg name="start_vz" value="0.0"/>
+  <arg name="goal_x" default="28.5"/>
+  <arg name="goal_y" default="14.0"/>
+  <arg name="goal_z" default="1.3"/>
 
   <arg name="prefix" value="" unless="$(arg debug)"/>
   <arg name="prefix" value="gdb -ex run --args" if="$(arg debug)"/>
 
   <node pkg="mpl_test_node"
-    type="ellipsoid_planner_node"
-    name="test_primitive"
-    launch-prefix="$(arg prefix)"
-    output="screen">
+        type="ellipsoid_planner_node"
+        name="test_primitive"
+        launch-prefix="$(arg prefix)"
+        output="screen">
     <remap from="~pose" to="/move_base_simple/goal"/>
-    <param name="file" value="$(find mpl_test_node)/maps/office/office.bag"/>
+    
+    <!-- Using the bag_file as before -->
+    <param name="file" value="$(arg bag_file)"/>
     <param name="topic" value="/cloud"/>
-    <!-- Set start and goal -->
-    <param name="start_x" value="8.0"/>
-    <param name="start_y" value="13.0"/>
-    <param name="start_z" value="1.3"/>
-    <param name="start_vx" value="0.0"/>
-    <param name="start_vy" value="0.0"/>
-    <param name="start_vz" value="0.0"/>
-    <param name="goal_x" value="28.5"/>
-    <param name="goal_y" value="14.0"/>
-    <param name="goal_z" value="1.3"/>
-    <!-- Set range -->
+
+    <!-- Set start and goal using passed arguments -->
+    <param name="start_x" value="$(arg start_x)"/>
+    <param name="start_y" value="$(arg start_y)"/>
+    <param name="start_z" value="$(arg start_z)"/>
+    <param name="start_vx" value="$(arg start_vx)"/>
+    <param name="start_vy" value="$(arg start_vy)"/>
+    <param name="start_vz" value="$(arg start_vz)"/>
+    <param name="goal_x" value="$(arg goal_x)"/>
+    <param name="goal_y" value="$(arg goal_y)"/>
+    <param name="goal_z" value="$(arg goal_z)"/>
+
+    <!-- The rest of your parameters remain the same -->
     <param name="origin_x" value="6.0"/>
     <param name="origin_y" value="12.0"/>
     <param name="origin_z" value="0.0"/>
     <param name="range_x" value="25.0"/>
     <param name="range_y" value="5.0"/>
     <param name="range_z" value="1.5"/>
-    <!-- Set dynamic constraints -->
     <param name="dt" value="$(arg dt)"/>
     <param name="v_max" value="10.0"/>
     <param name="a_max" value="10"/>
     <param name="u_max" value="60.0"/>
-    <!--<param name="t_max" value="$(eval dt*10)"/>-->
     <param name="t_max" value="-1"/>
     <param name="use_3d" value="false"/>
     <param name="use_prior" value="false"/>
@@ -49,5 +62,4 @@
     <param name="max_num" value="$(arg max_num)"/>
     <param name="robot_r" value="0.5"/>
   </node>
-
 </launch>

@@ -1,10 +1,11 @@
 <launch>
   #### From STL To Cloud ####
+  <arg name="stl_file" default="$(find mpl_test_node)/maps/skir/skir.stl"/>
   <node pkg="planning_ros_utils"
     type="mesh_sampling"
     name="mesh_to_cloud"
     output="screen">
-    <param name="file" value="$(find mpl_test_node)/maps/skir/skir.stl"/>
+    <param name="file" value="$(arg stl_file)"/>
     <remap from="~cloud" to="cloud"/>
     <param name="n_samples" value="1000000"/>
     <param name="leaf_size" value="0.05"/>
