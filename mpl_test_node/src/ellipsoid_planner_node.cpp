@@ -228,7 +228,7 @@ int main(int argc, char **argv) {
     max_attitude(traj, 1000);
   }
 
-  ros::spin();
+  ros::shutdown();
 
   return 0;
 }

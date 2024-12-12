@@ -35,7 +35,7 @@ for stl_file in "$STL_DIR"/*.stl; do
 
     # 2. Record voxel_map
     BAG_NAME="${base_name}.bag"
-    timeout 15s rosbag record -O "$OUTPUT_DIR/$BAG_NAME" /voxel_map:=/cloud
+    timeout 15s rosbag record -O "$OUTPUT_DIR/$BAG_NAME" /cloud /voxel_map
 
     # Terminate mesh_to_map after recording finishes
     kill $MESH_TO_MAP_PID
