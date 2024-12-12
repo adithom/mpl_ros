@@ -10,28 +10,30 @@
 // Function to save trajectory to a CSV file
 // This function samples the trajectory at a fixed interval (e.g., 0.1s)
 // and writes time, position, velocity, and acceleration to a CSV file.
+// Function to save trajectory to CSV
 void saveTrajectoryToCSV(const std::string &filename, const Trajectory3D &traj, double sampling_interval = 0.1) {
-  std::ofstream file(filename);
-  if (!file.is_open()) {
-    ROS_ERROR("Failed to open file for writing trajectory: %s", filename.c_str());
-    return;
-  }
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        ROS_ERROR("Failed to open file for writing trajectory: %s", filename.c_str());
+        return;
+    }
 
-  // CSV Header
-  file << "time,pos_x,pos_y,pos_z,vel_x,vel_y,vel_z,acc_x,acc_y,acc_z\n";
+    // Write CSV header
+    file << "time,pos_x,pos_y,pos_z,vel_x,vel_y,vel_z\n";
 
-  double total_time = traj.getTotalTime();
-  for (double t = 0.0; t <= total_time; t += sampling_interval) {
-    auto waypoint = traj.evaluate(t);
-    file << t << ","
-         << waypoint.pos(0) << "," << waypoint.pos(1) << "," << waypoint.pos(2) << ","
-         << waypoint.vel(0) << "," << waypoint.vel(1) << "," << waypoint.vel(2) << ","
-         << waypoint.acc(0) << "," << waypoint.acc(1) << "," << waypoint.acc(2) << "\n";
-  }
+    // Iterate through the trajectory and write data
+    double total_time = traj.getTotalTime();
+    for (double t = 0.0; t <= total_time; t += sampling_interval) {
+        auto waypoint = traj.evaluate(t);
+        file << t << "," 
+             << waypoint.pos(0) << "," << waypoint.pos(1) << "," << waypoint.pos(2) << ","
+             << waypoint.vel(0) << "," << waypoint.vel(1) << "," << waypoint.vel(2) << "\n";
+    }
 
-  file.close();
-  ROS_INFO("Trajectory saved to file: %s", filename.c_str());
+    file.close();
+    ROS_INFO("Trajectory saved to file: %s", filename.c_str());
 }
+
 
 
 int main(int argc, char **argv) {
